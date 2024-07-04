@@ -1,7 +1,9 @@
-﻿using System;
-using System.Net;
-using System.Web;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System;
 using UnityEngine;
+using RestSharp.Portable;
+using NoobsMuc.Coinmarketcap.Client;
 
 namespace Assets.Scripts
 {
@@ -9,92 +11,149 @@ namespace Assets.Scripts
     {
         private const string API_KEY = "95a02fe4-52f5-4ab4-84aa-236a7e4c43a2";
 
-        private RUB _rub = new();
-        private BTC _btc;
-        private USD _usd;
 
         private void Start()
         {
-            try
-            {
-                Debug.Log(MakeAPICall());
-            }
-            catch (WebException e)
-            {
-                Debug.Log(e.Message);
-            }
-        }
+            ICoinmarketcapClient client = new Scripts.CoinmarketcapClient(API_KEY);
+            var list = client.GetConvertCurrencyList();
+            list.ForEach(x => Debug.Log(x));
 
-        private string MakeAPICall()
+            Debug.Log(client.GetCurrencyBySlug("BTC").Price);
+        }
+    }
+
+    public class CoinmarketcapClient : ICoinmarketcapClient
+    {
+        private const string UrlBase = "https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/";
+        private const string UrlBaseV2 = "https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/";
+        private const string UrlPartList = "listings/latest";
+        private const string UrlPartItem = "quotes/latest";
+        private string _ApiKey;
+
+        public CoinmarketcapClient(string apiKey)
         {
-            var URL = new UriBuilder("https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest");
-
-            var queryString = HttpUtility.ParseQueryString(string.Empty);
-            queryString["start"] = "1";
-            queryString["limit"] = "20000";
-            queryString["convert"] = "RUB";
-            URL.Query = queryString.ToString();
-
-            var client = new WebClient();
-            client.Headers.Add("X-CMC_PRO_API_KEY", API_KEY);
-            client.Headers.Add("Accepts", "application/json");
-
-            _rub = JsonUtility.FromJson<RUB>(URL.ToString());
-
-            queryString["convert"] = "USD";
-            URL.Query = queryString.ToString();
-            _usd = JsonUtility.FromJson<USD>(URL.ToString());
-
-            queryString["convert"] = "BTC";
-            URL.Query = queryString.ToString();
-            _btc = JsonUtility.FromJson<BTC>(URL.ToString());
-
-            return client.DownloadString(URL.ToString());
+            _ApiKey = apiKey;
         }
-    }
+        List<string> ICoinmarketcapClient.GetConvertCurrencyList()
+        {
+            return new List<string> { "BTC", "USD", "RUB", "ETH", "DAO" };
+        }
 
-    [Serializable]
-    public class RUB
-    {
-        public double? price;
-        public int? volume_24h;
-        public double? volume_change_24h;
-        public double? percent_change_1h;
-        public double? percent_change_24h;
-        public double? percent_change_7d;
-        public double? market_cap;
-        public int? market_cap_dominance;
-        public double? fully_diluted_market_cap;
-        public DateTime? last_updated;
-    }
+        Currency ICoinmarketcapClient.GetCurrencyBySlug(string slug)
+        {
+            return CurrencyBySlugList(new List<string> { slug }, string.Empty).First();
+        }
 
-    [Serializable]
-    public class USD
-    {
-        public double? price;
-        public int? volume_24h;
-        public double? volume_change_24h;
-        public double? percent_change_1h;
-        public double? percent_change_24h;
-        public double? percent_change_7d;
-        public double? market_cap;
-        public int? market_cap_dominance;
-        public double? fully_diluted_market_cap;
-        public DateTime? last_updated;
-    }
+        Currency ICoinmarketcapClient.GetCurrencyBySymbol(string symbol)
+        {
+            return CurrencyBySymbolList(new List<string> { symbol }, symbol).First();
+        }
 
-    [Serializable]
-    public class BTC
-    {
-        public double? price;
-        public int? volume_24h;
-        public double? volume_change_24h;
-        public double? percent_change_1h;
-        public double? percent_change_24h;
-        public double? percent_change_7d;
-        public double? market_cap;
-        public int? market_cap_dominance;
-        public double? fully_diluted_market_cap;
-        public DateTime? last_updated;
+        Currency ICoinmarketcapClient.GetCurrencyBySlug(string slug, string convertCurrency)
+        {
+            return CurrencyBySlugList(new List<string> { slug }, convertCurrency).First();
+        }
+
+        Currency ICoinmarketcapClient.GetCurrencyBySymbol(string symbol, string convertCurrency)
+        {
+            return CurrencyBySymbolList(new List<string> { symbol }, convertCurrency).First();
+        }
+
+        public IEnumerable<Currency> GetCurrencyBySlugList(string[] slugList)
+        {
+            return CurrencyBySlugList(slugList.ToList(), string.Empty);
+        }
+
+        public IEnumerable<Currency> GetCurrencyBySlugList(string[] slugList, string convertCurrency)
+        {
+            return CurrencyBySlugList(slugList.ToList(), convertCurrency);
+        }
+
+        public IEnumerable<Currency> GetCurrencyBySymbolList(string[] symbolList)
+        {
+            return CurrencyBySymbolList(symbolList.ToList(), string.Empty);
+        }
+
+        public IEnumerable<Currency> GetCurrencyBySymbolList(string[] symbolList, string convertCurrency)
+        {
+            return CurrencyBySymbolList(symbolList.ToList(), convertCurrency);
+        }
+
+        private IEnumerable<Currency> CurrencyBySlugList(List<string> slugList, string convertCurrency)
+        {
+            var queryArguments = new Dictionary<string, string>
+            {
+                {"slug", string.Join(",", slugList.Select(item => item.ToLower()))}
+            };
+
+            var client = GetWebApiClient(UrlBaseV2, UrlPartItem, ref convertCurrency, queryArguments);
+            var result = client.MakeRequest(Method.GET, convertCurrency, true, false, slugList);
+
+            return result;
+        }
+
+        private IEnumerable<Currency> CurrencyBySymbolList(List<string> symbolList, string convertCurrency)
+        {
+            var queryArguments = new Dictionary<string, string>
+            {
+                {"symbol", string.Join(",", symbolList.Select(item => item.ToLower()))}
+            };
+
+            var client = GetWebApiClient(UrlBaseV2, UrlPartItem, ref convertCurrency, queryArguments);
+            var result = client.MakeRequest(Method.GET, convertCurrency, true, true, symbolList);
+
+            return result;
+        }
+
+        private WebApiClient GetWebApiClient(string baseUrl,
+            string urlPart, ref string convertCurrency, Dictionary<string, string> queryArguments)
+        {
+            if (string.IsNullOrEmpty(convertCurrency))
+                convertCurrency = "USD";
+
+            queryArguments.Add("convert", convertCurrency);
+
+            UriBuilder uri = new UriBuilder(baseUrl + urlPart);
+            var client = new WebApiClient(uri, queryArguments, _ApiKey);
+            return client;
+        }
+
+        IEnumerable<Currency> ICoinmarketcapClient.GetCurrencies()
+        {
+            return Currencies(-1, string.Empty);
+        }
+
+        IEnumerable<Currency> ICoinmarketcapClient.GetCurrencies(string convertCurrency)
+        {
+            return Currencies(-1, convertCurrency);
+        }
+
+        IEnumerable<Currency> ICoinmarketcapClient.GetCurrencies(int limit)
+        {
+            return Currencies(limit, string.Empty);
+        }
+
+        IEnumerable<Currency> ICoinmarketcapClient.GetCurrencies(int limit, string convertCurrency)
+        {
+            return Currencies(limit, convertCurrency);
+        }
+
+        private List<Currency> Currencies(int limit, string convertCurrency)
+        {
+            var queryArguments = new Dictionary<string, string>
+            {
+                {"start", "1"}
+            };
+
+            if (limit > 0)
+                queryArguments.Add("limit", limit.ToString());
+            else
+                queryArguments.Add("limit", "100");
+
+            var client = GetWebApiClient(UrlBase, UrlPartList, ref convertCurrency, queryArguments);
+
+            var result = client.MakeRequest(Method.GET, convertCurrency, false, false, new List<string>());
+            return result;
+        }
     }
 }
