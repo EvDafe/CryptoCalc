@@ -1,16 +1,14 @@
-using System;
 using UnityEngine;
-using Zenject;
+using UnityEngine.Events;
 
 public class ThemeChangePoint : MonoBehaviour
 {
-    public Action<string> ThemeUpdated;
+    [SerializeField] private DisabledTextShower _disabledTextShower;
 
-    public void Start()
-    {
+    public UnityEvent<string> ThemeUpdated;
+
+    public void Start() =>
         ThemeUpdated?.Invoke(PlayerPrefs.GetString(PlayerPrefsKeys.ThemeKey, PlayerPrefsKeys.DarkKey));
-        Debug.Log("Initialized");
-    }
 
     public void SetToLight() =>
         SetTheme(PlayerPrefsKeys.LightKey);
@@ -23,7 +21,9 @@ public class ThemeChangePoint : MonoBehaviour
         if (PlayerPrefs.GetString(PlayerPrefsKeys.ThemeKey) != theme)
         {
             PlayerPrefs.SetString(PlayerPrefsKeys.ThemeKey, theme);
+            _disabledTextShower.DisableEnabledText();
             ThemeUpdated?.Invoke(theme);
+            _disabledTextShower.EnableEarlyDisabledText();
         }
     }
 
