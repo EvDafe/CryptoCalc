@@ -10,6 +10,17 @@ namespace Assets.Scripts
         private const string API_KEY = "95a02fe4-52f5-4ab4-84aa-236a7e4c43a2";
         private Dictionary<CurrencyType, Currency> _currencies = new();
 
+        private readonly Dictionary<CurrencyType, string> _fullNames = new()
+        {
+            [CurrencyType.BTC] = "BitCoin",
+            [CurrencyType.USD] = "Dollar",
+            [CurrencyType.RUB] = "Rubl",
+            [CurrencyType.ETH] = "Ethereum",
+            [CurrencyType.DAO] = "DogeCoint"
+        };
+
+        public Dictionary<CurrencyType, string> FullNames => _fullNames;  
+
         public string[] Names => new[] { nameof(CurrencyType.BTC), nameof(CurrencyType.USD), nameof(CurrencyType.RUB), nameof(CurrencyType.ETH), nameof(CurrencyType.DAO) };
         public Dictionary<CurrencyType, Currency> Currencies => _currencies;
 
@@ -20,5 +31,7 @@ namespace Assets.Scripts
             for(int i = 0; i < list.Count; i++)
                 _currencies.Add((CurrencyType)i,list[i]);
         }
+
+        public string GetCuttedName(CurrencyType type) => nameof(type);
     }
 }
