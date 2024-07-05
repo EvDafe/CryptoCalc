@@ -3,7 +3,9 @@ using NoobsMuc.Coinmarketcap.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 [Serializable]
@@ -11,9 +13,11 @@ public class CurrencyAdder : MonoBehaviour
 {
     [SerializeField] private CurrencyDataView _currencyDataViewPrefab;
     [SerializeField] private Sprite _placeHolder;
+    [SerializeField] private TMP_InputField _input;
+    [SerializeField] private CurrencySellector _selector; 
+    [SerializeField] private Transform _rectOfCurrecyDatas;
 
     private CurrencyContainer _currencyContainer;
-    private Transform _rectOfCurrecyDatas;
     private SaverLoader _saverLoader;
     private List<CurrencyDataView> _dataViews;
 
@@ -64,8 +68,10 @@ public class CurrencyAdder : MonoBehaviour
         Destroy(currencyDataView.gameObject);
     }
 
-    public void AddCurrency(decimal countToAddInDollars, CurrencyType currencyType)
+    public void AddCurrency()
     {
+        CurrencyType currencyType = _selector.SellectedCurrencyType;
+        decimal countToAddInDollars = decimal.Parse(_input.text);
         CurrencyPurchaseData data = _saverLoader.Progress.CurrencyDatas[currencyType];
         Currency currency = _currencyContainer.Currencies[currencyType];
         if (_dataViews.Where(x => x.Currency == currencyType).ToList().Count != 0)
