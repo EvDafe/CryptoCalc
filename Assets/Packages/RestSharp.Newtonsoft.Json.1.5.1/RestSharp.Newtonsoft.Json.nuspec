@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>RestSharp.Newtonsoft.Json</id>
+    <version>1.5.1</version>
+    <title>RestSharp.Serializers.Newtonsoft.Json</title>
+    <authors>Adam Fisher</authors>
+    <owners>Adam Fisher</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/adamfisher/RestSharp.Serializers.Newtonsoft.Json/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/adamfisher/RestSharp.Serializers.Newtonsoft.Json</projectUrl>
+    <iconUrl>https://pbs.twimg.com/profile_images/525503893/restsharp_400x400.png</iconUrl>
+    <description>Restores Newtonsoft.JSON as the default serializer for RestSharp.</description>
+    <copyright>Copyright 2017</copyright>
+    <tags>REST HTTP API JSON XML NEWTONSOFT RESTSHARP</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+        <dependency id="RestSharp" version="106.5.4" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Newtonsoft.Json" version="12.0.1" exclude="Build,Analyzers" />
+        <dependency id="RestSharp" version="106.5.4" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

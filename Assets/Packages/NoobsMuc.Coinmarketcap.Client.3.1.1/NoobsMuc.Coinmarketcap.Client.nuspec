@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>NoobsMuc.Coinmarketcap.Client</id>
+    <version>3.1.1</version>
+    <title>Coinmarketcap Client</title>
+    <authors>Dominik Lindemann / Axel Katzur</authors>
+    <license type="expression">BSD-2-Clause</license>
+    <licenseUrl>https://licenses.nuget.org/BSD-2-Clause</licenseUrl>
+    <icon>noobs.png</icon>
+    <projectUrl>https://github.com/noobsmuc/CoinmarketcapClient</projectUrl>
+    <iconUrl>https://de.gravatar.com/userimage/125252678/6ee38e8da9120e8394a092de4d5c4849</iconUrl>
+    <description>C# client to connect to coinmarketcap API</description>
+    <releaseNotes>update nuget packages add support net80</releaseNotes>
+    <copyright>Copyright 2023 (c). All rights reserved.</copyright>
+    <tags>coinmarketcap crypto client C# .net</tags>
+    <repository type="git" url="https://github.com/noobsmuc/CoinmarketcapClient.git" commit="028e0ca02d89f7036a8bb526f00da9111445983e" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.8">
+        <dependency id="FubarCoder.RestSharp.Portable.HttpClient" version="4.0.8" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.WebUtilities" version="2.2.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0">
+        <dependency id="FubarCoder.RestSharp.Portable.HttpClient" version="4.0.8" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.WebUtilities" version="2.2.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net8.0">
+        <dependency id="FubarCoder.RestSharp.Portable.HttpClient" version="4.0.8" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.WebUtilities" version="2.2.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="FubarCoder.RestSharp.Portable.HttpClient" version="4.0.8" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.WebUtilities" version="2.2.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
