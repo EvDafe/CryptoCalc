@@ -55,13 +55,17 @@ public class CurrencyAdder : MonoBehaviour
 
     public void DeleteACurrencyView(CurrencyType currencyType)
     {
+        if (_dataViews.Count == 0) return;
         CurrencyDataView currencyDataView = _dataViews[0];
+        bool found = false;
         foreach(var view in _dataViews)
             if (view.Currency == currencyType)
             {
+                found = true;
                 currencyDataView = view;
                 break;
             }
+        if (found == false) return;
         _dataViews.Remove(currencyDataView);
         _saverLoader.Progress.CurrencyDatas[currencyType] = new CurrencyPurchaseData() { _currency = currencyType };
         _saverLoader.Save();
@@ -74,16 +78,14 @@ public class CurrencyAdder : MonoBehaviour
         decimal countToAddInDollars = decimal.Parse(_input.text);
         CurrencyPurchaseData data = _saverLoader.Progress.CurrencyDatas[currencyType];
         Currency currency = _currencyContainer.Currencies[currencyType];
-        if (_dataViews.Where(x => x.Currency == currencyType).ToList().Count != 0)
-        {
-            DeleteACurrencyView(currencyType);
-            data._dollarPurchase = countToAddInDollars;
-
-        }    
+        decimal pisya = data._dollarPurchase;
+        bool fi = _dataViews.Where(x => x.Currency == currencyType).ToList().Count != 0;
+        DeleteACurrencyView(currencyType);
+        data = _saverLoader.Progress.CurrencyDatas[currencyType];
+        if (fi)
+            data._dollarPurchase = countToAddInDollars + pisya;
         else
-        {
-            data._dollarPurchase = countToAddInDollars + data._dollarPurchase;
-        }
+            data._dollarPurchase = countToAddInDollars;
         data._dollarPurchasePrice = currency.Price;
         _saverLoader.Save();
         CreateACurrencyView(currencyType);

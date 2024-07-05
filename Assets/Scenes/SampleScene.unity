@@ -3970,7 +3970,6 @@ GameObject:
   - component: {fileID: 1185890722}
   - component: {fileID: 1185890721}
   - component: {fileID: 1185890723}
-  - component: {fileID: 1185890724}
   m_Layer: 0
   m_Name: ThemeChangePoint
   m_TagString: Untagged
@@ -3990,7 +3989,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce098c707b9766840855348f31adeee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _disabledTextShower: {fileID: 1185890724}
   ThemeUpdated:
     m_PersistentCalls:
       m_Calls: []
@@ -4024,29 +4022,6 @@ MonoBehaviour:
   LanguageChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1185890724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1185890720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2a2de50e30a0c24385930dbfd9a294f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _allTexts:
-  - {fileID: 2040565042}
-  - {fileID: 813712420}
-  - {fileID: 1938046215}
-  - {fileID: 0}
-  - {fileID: 425150481}
-  - {fileID: 1723909377}
-  - {fileID: 1428432494}
-  - {fileID: 975071358}
-  - {fileID: 811877398}
-  - {fileID: 33326899}
 --- !u!1 &1191273353
 GameObject:
   m_ObjectHideFlags: 0
