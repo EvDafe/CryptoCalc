@@ -1,5 +1,4 @@
 ﻿using NoobsMuc.Coinmarketcap.Client;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,6 +14,7 @@ namespace Assets.Scripts
         [SerializeField] private Button _openButton;
         [SerializeField] private SellectorBGImage _BGImage;
         [SerializeField] private List<GameObject> _onCloseUI;
+        [SerializeField] private ScrollRect _scrollRect;
 
         private CurrencyContainer _currencyContainer;
         private Currency _sellectedCurrency;
@@ -39,6 +39,7 @@ namespace Assets.Scripts
 
         private void Open()
         {
+            _scrollRect.verticalNormalizedPosition = 1;
             _BGImage.Open();
             _onCloseUI.ForEach(x => x.SetActive(false));
             _openButton.gameObject.SetActive(false);
@@ -60,12 +61,13 @@ namespace Assets.Scripts
         {
             _sellectedCurrencyType = _currencyContainer.Currencies.GetKeyByValue(currency);
             _sellectedCurrency = currency;
-            Close();
             UpdateButtons();
+            Close();
         }
 
         private void Close()
         {
+            _scrollRect.verticalNormalizedPosition = 1;
             _BGImage.Close();
             _onCloseUI.ForEach(x => x.SetActive(true));
             _openButton.gameObject.SetActive(true);
@@ -80,7 +82,7 @@ namespace Assets.Scripts
             var types = castil.ToList();
             types.Remove(skippedId);
             for (int i = 1; i < _sellectionButtons.Count; i++)
-                _sellectionButtons[i].SetCurrency(_currencyContainer.Names[i], _currencyContainer.Currencies[(CurrencyType)types[i-1]]);
+                _sellectionButtons[i].SetCurrency(_currencyContainer.Names[types[i - 1]], _currencyContainer.Currencies[(CurrencyType)types[i-1]]);
         }
     }
 }
