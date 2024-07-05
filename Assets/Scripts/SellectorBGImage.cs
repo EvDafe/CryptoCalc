@@ -8,16 +8,12 @@ namespace Assets.Scripts
         [SerializeField] private float _closeHeight;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Transform _onOpenPosition;
+        [SerializeField] private Camera _camera;
         
         private Vector3 _startPosition;
-        private Camera _camera;
 
-        private void Start()
-        {
-            _camera = Camera.main;
-            _startPosition = _camera.WorldToScreenPoint(transform.position);
-            _startPosition.z = 0;
-        }
+        private void Awake() => 
+            _startPosition = transform.position;
 
         public void Open()
         {
@@ -27,9 +23,7 @@ namespace Assets.Scripts
 
         public void Close()
         {
-            Debug.Log(_camera == null);
-            Debug.Log(transform == null);
-            transform.position = _camera.WorldToScreenPoint(_startPosition);
+            transform.position = _startPosition;
             _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _closeHeight);
         }
     }
