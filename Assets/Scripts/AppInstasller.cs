@@ -12,6 +12,7 @@ public class AppInstasller : MonoInstaller
 
     public override void InstallBindings()
     {
+        Container.Bind<SaverLoader>().FromNew().AsSingle().NonLazy();
         Container.Bind<ThemeChangePoint>().FromInstance(_themeChangePoint).AsSingle().Lazy();
         Container.Bind<LanguagesContainer>().FromInstance(_languagesContainer).AsSingle().NonLazy();
         Container.Bind<CurrencyContainer>().FromInstance(_currencyContainer).AsSingle().NonLazy();
