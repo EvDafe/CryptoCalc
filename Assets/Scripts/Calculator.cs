@@ -33,7 +33,16 @@ namespace Assets.Scripts
         private void CreateConvertation()
         {
             Debug.Log(Amount().ToString());
-            _prevConvertationContainer.CreateConvertation();
+            var convertationData = new ConvertationData();
+            convertationData.FromAmount = int.Parse(_inputField.text);
+            convertationData.FromCurrencyType = _fromSellector.SellectedCurrencyType;
+            convertationData.FromCurrencyName = _currencyContainer.Names[(int)_fromSellector.SellectedCurrencyType];
+
+            convertationData.ToAmount = Amount();
+            convertationData.ToCurrencyType = _toSellector.SellectedCurrencyType;
+            convertationData.ToCurrencyName = _currencyContainer.Names[(int)_toSellector.SellectedCurrencyType];
+
+            _prevConvertationContainer.CreateConvertation(convertationData);
         }
 
         private void UpdateConvertationForInputField(string name) =>
