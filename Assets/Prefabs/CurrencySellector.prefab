@@ -71,7 +71,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 70ebc882c46c4a14a92ec401055cb0d6, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -140,6 +140,7 @@ MonoBehaviour:
   _closeHeight: 150
   _rectTransform: {fileID: 2449256389473306561}
   _onOpenPosition: {fileID: 960115847999738796}
+  _camera: {fileID: 0}
 --- !u!1 &4165884087500970861
 GameObject:
   m_ObjectHideFlags: 0
