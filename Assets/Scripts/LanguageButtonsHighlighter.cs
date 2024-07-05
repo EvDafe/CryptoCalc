@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using Zenject;
 
-public class LanguageButtonsHighlighter : MonoBehaviour
+public class LanguageButtonsHighlighter : ThemeAdapriveObject
 {
     [SerializeField] private TMP_Text _engButton;
     [SerializeField] private TMP_Text _ruButton;
@@ -14,26 +14,35 @@ public class LanguageButtonsHighlighter : MonoBehaviour
         _languageContainer = container;
 
     private void OnEnable() =>
-        UpdateColor();
+        UpdateObject(PlayerPrefs.GetString(PlayerPrefsKeys.ThemeKey, PlayerPrefsKeys.DarkKey));
 
     private void Start()
     {
-        _languageContainer.LanguageChanged.AddListener(UpdateColor);
-        UpdateColor();
+        _languageContainer.LanguageChanged.AddListener(() => UpdateObject(PlayerPrefs.GetString(PlayerPrefsKeys.ThemeKey, PlayerPrefsKeys.DarkKey)));
+        UpdateObject(PlayerPrefs.GetString(PlayerPrefsKeys.ThemeKey, PlayerPrefsKeys.DarkKey));
     }
 
-    private void UpdateColor()
+    protected override void UpdateObject(string theme)
     {
-        Color defaultColor = _engButton.color == Color.green ? _ruButton.color : _engButton.color;
-        _engButton.color = defaultColor;
-        _ruButton.color = defaultColor;
+        Debug.Log("Update button colour");
+        Color defaultColour = Color.white;
+        switch (theme)
+        {
+            case nameof(PlayerPrefsKeys.DarkKey):
+                defaultColour = Color.white; break;
+            case nameof(PlayerPrefsKeys.LightKey):
+                defaultColour = Color.black; break;
+        }
+        _engButton.color = defaultColour;
+        _ruButton.color = defaultColour;
+
+        Color green = defaultColour == Color.black ? Color.red : Color.green;
         switch (LanguagesContainer.GameLanguage)
         {
             case Languages.English:
-                _engButton.color = Color.green; break;
+                _engButton.color = green; break;
             case Languages.Russian:
-                _ruButton.color = Color.green; break;
+                _ruButton.color = green; break;
         }
     }
-
 }
