@@ -12,7 +12,7 @@ namespace Assets.Scripts
         
         private Vector3 _startPosition;
 
-        private void Awake() => 
+        private void OnEnable() => 
             _startPosition = transform.position;
 
         public void Open()

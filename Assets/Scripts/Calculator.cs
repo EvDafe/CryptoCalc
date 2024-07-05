@@ -33,7 +33,7 @@ namespace Assets.Scripts
         private void CreateConvertation()
         {
             Debug.Log(Amount().ToString());
-            _prevConvertationContainer.CreateConvertation();
+            //_prevConvertationContainer.CreateConvertation();
         }
 
         private void UpdateConvertationForInputField(string name) =>
