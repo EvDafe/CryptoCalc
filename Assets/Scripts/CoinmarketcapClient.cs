@@ -1,27 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System;
-using UnityEngine;
 using RestSharp.Portable;
 using NoobsMuc.Coinmarketcap.Client;
 
 namespace Assets.Scripts
 {
-    public class Test : MonoBehaviour
-    {
-        private const string API_KEY = "95a02fe4-52f5-4ab4-84aa-236a7e4c43a2";
-
-
-        private void Start()
-        {
-            ICoinmarketcapClient client = new Scripts.CoinmarketcapClient(API_KEY);
-            var list = client.GetConvertCurrencyList();
-            list.ForEach(x => Debug.Log(x));
-
-            Debug.Log(client.GetCurrencyBySlug("BTC").Price);
-        }
-    }
-
     public class CoinmarketcapClient : ICoinmarketcapClient
     {
         private const string UrlBase = "https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/";
