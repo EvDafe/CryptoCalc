@@ -1,9 +1,10 @@
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class ThemeChangePoint : MonoBehaviour
 {
-    [SerializeField] private DisabledTextShower _disabledTextShower;
+    private DisabledTextShower _disabledTextShower => Services.DisabledTextShower;
 
     public UnityEvent<string> ThemeUpdated;
 

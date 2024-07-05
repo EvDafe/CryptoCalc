@@ -1,42 +1,26 @@
-﻿using System;
-using TMPro;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
     public class PrevConvertationContainer : MonoBehaviour
     {
         [SerializeField] private ConvertationUI _convertationUIPrefab;
+        [SerializeField] private Transform _root;
+
+        private List<ConvertationUI> _spawned = new();
 
         public void CreateConvertation(ConvertationData convertationData)
         {
-        }
-    }
-
-    [Serializable]
-    public class ConvertationData
-    {
-        public string ToCurrencyName;
-        public string FromCurrencyName;
-        public CurrencyType ToCurrencyType;
-        public CurrencyType FromCurrencyType;
-        public decimal ToAmount;
-        public decimal FromAmount;
-    }
-
-    public class ConvertationUI : MonoBehaviour
-    {
-        [SerializeField] private TMP_Text _fromNameText;
-        [SerializeField] private TMP_Text _toNameText;
-        [SerializeField] private TMP_Text _fromAmountText;
-        [SerializeField] private TMP_Text _toAmountText;
-        [SerializeField] private Image _toCurrencyImage;
-        [SerializeField] private Image _fromCurrencyImage;
-
-        public void SetConvertation(ConvertationData data)
-        {
-
+            if(_spawned.Count == 4)
+            {
+                Destroy(_spawned.First().gameObject);
+                _spawned.RemoveAt(0);
+            }
+            var spawned = Instantiate(_convertationUIPrefab, _root);
+            spawned.SetConvertation(convertationData);
+            _spawned.Add(spawned);
         }
     }
 }

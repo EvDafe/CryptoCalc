@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -32,15 +31,24 @@ namespace Assets.Scripts
 
         private void CreateConvertation()
         {
-            Debug.Log(Amount().ToString());
-            //_prevConvertationContainer.CreateConvertation();
+            var convertationData = new ConvertationData();
+            convertationData.FromAmount = int.Parse(_inputField.text);
+            convertationData.FromCurrencyType = _fromSellector.SellectedCurrencyType;
+            convertationData.FromCurrencyName = _currencyContainer.Names[(int)_fromSellector.SellectedCurrencyType];
+
+            convertationData.ToAmount = Amount();
+            convertationData.ToCurrencyType = _toSellector.SellectedCurrencyType;
+            convertationData.ToCurrencyName = _currencyContainer.Names[(int)_toSellector.SellectedCurrencyType];
+
+            _prevConvertationContainer.CreateConvertation(convertationData);
+            UpdateConvertation();
         }
 
         private void UpdateConvertationForInputField(string name) =>
-            _convertationAmountText.text = Amount().ToString();
+            _convertationAmountText.text = Amount().ToString("0.00");
 
         private void UpdateConvertation() => 
-            _convertationAmountText.text = Amount().ToString();
+            _convertationAmountText.text = Amount().ToString("0.00");
 
         private decimal Amount() =>
             (_currencyContainer.Currencies[_fromSellector.SellectedCurrencyType].Price * int.Parse(_inputField.text)) / _currencyContainer.Currencies[_toSellector.SellectedCurrencyType].Price;

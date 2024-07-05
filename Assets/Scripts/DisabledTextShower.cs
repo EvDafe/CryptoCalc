@@ -1,27 +1,26 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-public class DisabledTextShower : MonoBehaviour
+public class DisabledTextShower
 {
-    [SerializeField] private TMP_Text[] _allTexts;
+    public List<GameObject> _allTexts = new();
 
     private Queue<int> _indexesOfDisabled;
 
     public void DisableEnabledText()
     {
         _indexesOfDisabled = new();
-        for(int i = 0; i < _allTexts.Length; i++)
+        for(int i = 0; i < _allTexts.Count; i++)
         {
-            if (!_allTexts[i].gameObject.activeSelf) continue;
+            if (!_allTexts[i].activeSelf) continue;
             _indexesOfDisabled.Enqueue(i);
-            _allTexts[i].gameObject.SetActive(false);
+            _allTexts[i].SetActive(false);
         }
     }
 
     public void EnableEarlyDisabledText()
     {
         while (_indexesOfDisabled.Count != 0)
-            _allTexts[_indexesOfDisabled.Dequeue()].gameObject.SetActive(true);
+            _allTexts[_indexesOfDisabled.Dequeue()].SetActive(true);
     }
 }

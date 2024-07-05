@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +9,9 @@ public sealed class ThemeAdapitveText : ThemeAdapriveObject
 
     private void OnValidate() =>
         _selfText ??= GetComponent<TMP_Text>();
+
+    private void Start() => 
+        Services.DisabledTextShower._allTexts.Add(gameObject);
 
     protected override void UpdateObject(string theme)
     {

@@ -1,16 +1,15 @@
+using Assets.Scripts;
 using UnityEngine;
-using Zenject;
 
 public abstract class ThemeAdapriveObject : MonoBehaviour
 {
-    private ThemeChangePoint _themeChangePoint;
-
-    [Inject]
-    protected virtual void Constuct(ThemeChangePoint themeChangePoint) =>
-    _themeChangePoint = themeChangePoint;
+    private ThemeChangePoint _themeChangePoint => Services.ThemeChangePoint;
 
     protected abstract void UpdateObject(string theme);
 
     private void OnEnable() =>
         _themeChangePoint.ThemeUpdated.AddListener(UpdateObject);
+
+    private void OnDisable() =>
+        _themeChangePoint.ThemeUpdated.RemoveListener(UpdateObject);
 }
