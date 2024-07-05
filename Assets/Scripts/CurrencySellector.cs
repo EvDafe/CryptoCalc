@@ -63,10 +63,10 @@ namespace Assets.Scripts
 
         private void OnSellect(Currency currency)
         {
-            Sellected?.Invoke();
             _sellectedCurrencyType = _currencyContainer.Currencies.GetKeyByValue(currency);
             _sellectedCurrency = currency;
             UpdateButtons();
+            Sellected?.Invoke();
             Close();
         }
 

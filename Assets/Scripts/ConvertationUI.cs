@@ -19,8 +19,8 @@ namespace Assets.Scripts
         {
             _fromNameText.text = data.FromCurrencyName;
             _toNameText.text = data.ToCurrencyName;
-            _fromAmountText.text = data.FromAmount.ToString();
-            _toAmountText.text = data.ToAmount.ToString();
+            _fromAmountText.text = data.FromAmount.ToString("0.00");
+            _toAmountText.text = data.ToAmount.ToString("0.00");
             _fromCurrencyImage.sprite = _currencyImagesData.CurrencySprites[(int)data.FromCurrencyType];
             _toCurrencyImage.sprite = _currencyImagesData.CurrencySprites[(int)data.ToCurrencyType];
         }
