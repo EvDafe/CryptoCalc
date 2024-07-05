@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Assets.Scripts
 {
@@ -18,11 +17,5 @@ namespace Assets.Scripts
             }
             return key;
         }
-
-        public static T FromJson<T>(this string yes) =>
-            Newtonsoft.Json.JsonConvert.DeserializeObject<T>(yes, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
-
-        public static string ToJson<T>(this T obj) =>
-            Newtonsoft.Json.JsonConvert.SerializeObject(obj, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
     }
 }
