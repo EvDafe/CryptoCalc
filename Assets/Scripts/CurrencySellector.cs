@@ -1,4 +1,5 @@
 ﻿using NoobsMuc.Coinmarketcap.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,7 +22,10 @@ namespace Assets.Scripts
         private CurrencyType _sellectedCurrencyType;
         private List<SellectionButton> _sellectionButtons = new();
 
+        public event Action Sellected;
         public Currency SellectedCurrency => _sellectedCurrency;
+        public CurrencyType SellectedCurrencyType => _sellectedCurrencyType;
+
 
         [Inject]
         private void Construct(CurrencyContainer currencyContainer) =>
@@ -59,6 +63,7 @@ namespace Assets.Scripts
 
         private void OnSellect(Currency currency)
         {
+            Sellected?.Invoke();
             _sellectedCurrencyType = _currencyContainer.Currencies.GetKeyByValue(currency);
             _sellectedCurrency = currency;
             UpdateButtons();
